@@ -7,16 +7,58 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22D04F4F2C0DB08C0052A6A4 /* VPNConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D04F4E2C0DB08C0052A6A4 /* VPNConnector.m */; };
+		22D04F582C0DBAAE0052A6A4 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D04F572C0DBAAE0052A6A4 /* NetworkExtension.framework */; };
+		22D04F5C2C0DBAAE0052A6A4 /* PacketTunnelProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D04F5B2C0DBAAE0052A6A4 /* PacketTunnelProvider.m */; };
+		22D04F612C0DBAAE0052A6A4 /* SwiftConnectTunnel.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 22D04F552C0DBAAE0052A6A4 /* SwiftConnectTunnel.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		22D04F682C0DBC350052A6A4 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D04F662C0DBC350052A6A4 /* GCDAsyncSocket.m */; };
+		22D04F6B2C0DBC6E0052A6A4 /* NSMutableData+Inspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D04F692C0DBC6E0052A6A4 /* NSMutableData+Inspector.m */; };
 		EFC2DB1D276041FB00E051A1 /* SwiftConnectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC2DB1C276041FB00E051A1 /* SwiftConnectApp.swift */; };
 		EFC2DB1F276041FB00E051A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC2DB1E276041FB00E051A1 /* ContentView.swift */; };
 		EFC2DB21276041FC00E051A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFC2DB20276041FC00E051A1 /* Assets.xcassets */; };
 		EFC2DB24276041FC00E051A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFC2DB23276041FC00E051A1 /* Preview Assets.xcassets */; };
 		EFC2DB2C2760527800E051A1 /* VPNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC2DB2B2760527800E051A1 /* VPNUtils.swift */; };
-		EFC2DB312760563400E051A1 /* SwiftShell in Frameworks */ = {isa = PBXBuildFile; productRef = EFC2DB302760563400E051A1 /* SwiftShell */; };
 		EFC2DB352760939300E051A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFC2DB342760939300E051A1 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		22D04F5F2C0DBAAE0052A6A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EFC2DB11276041FB00E051A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22D04F542C0DBAAE0052A6A4;
+			remoteInfo = SwiftConnectTunnel;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		22D04F652C0DBAAE0052A6A4 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				22D04F612C0DBAAE0052A6A4 /* SwiftConnectTunnel.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		22D04F4D2C0DB08C0052A6A4 /* SwiftConnect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftConnect-Bridging-Header.h"; sourceTree = "<group>"; };
+		22D04F4E2C0DB08C0052A6A4 /* VPNConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VPNConnector.m; sourceTree = "<group>"; };
+		22D04F502C0DB1820052A6A4 /* VPNConnector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPNConnector.h; sourceTree = "<group>"; };
+		22D04F552C0DBAAE0052A6A4 /* SwiftConnectTunnel.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SwiftConnectTunnel.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		22D04F572C0DBAAE0052A6A4 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		22D04F5A2C0DBAAE0052A6A4 /* PacketTunnelProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PacketTunnelProvider.h; sourceTree = "<group>"; };
+		22D04F5B2C0DBAAE0052A6A4 /* PacketTunnelProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PacketTunnelProvider.m; sourceTree = "<group>"; };
+		22D04F5D2C0DBAAE0052A6A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22D04F5E2C0DBAAE0052A6A4 /* SwiftConnectTunnel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftConnectTunnel.entitlements; sourceTree = "<group>"; };
+		22D04F662C0DBC350052A6A4 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		22D04F672C0DBC350052A6A4 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		22D04F692C0DBC6E0052A6A4 /* NSMutableData+Inspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+Inspector.m"; sourceTree = "<group>"; };
+		22D04F6A2C0DBC6E0052A6A4 /* NSMutableData+Inspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+Inspector.h"; sourceTree = "<group>"; };
 		EFC2DB19276041FB00E051A1 /* SwiftConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFC2DB1C276041FB00E051A1 /* SwiftConnectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftConnectApp.swift; sourceTree = "<group>"; };
 		EFC2DB1E276041FB00E051A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -29,21 +71,53 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		22D04F522C0DBAAE0052A6A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22D04F582C0DBAAE0052A6A4 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFC2DB16276041FB00E051A1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFC2DB312760563400E051A1 /* SwiftShell in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22D04F562C0DBAAE0052A6A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				22D04F572C0DBAAE0052A6A4 /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		22D04F592C0DBAAE0052A6A4 /* SwiftConnectTunnel */ = {
+			isa = PBXGroup;
+			children = (
+				22D04F6A2C0DBC6E0052A6A4 /* NSMutableData+Inspector.h */,
+				22D04F692C0DBC6E0052A6A4 /* NSMutableData+Inspector.m */,
+				22D04F672C0DBC350052A6A4 /* GCDAsyncSocket.h */,
+				22D04F662C0DBC350052A6A4 /* GCDAsyncSocket.m */,
+				22D04F5A2C0DBAAE0052A6A4 /* PacketTunnelProvider.h */,
+				22D04F5B2C0DBAAE0052A6A4 /* PacketTunnelProvider.m */,
+				22D04F5D2C0DBAAE0052A6A4 /* Info.plist */,
+				22D04F5E2C0DBAAE0052A6A4 /* SwiftConnectTunnel.entitlements */,
+			);
+			path = SwiftConnectTunnel;
+			sourceTree = "<group>";
+		};
 		EFC2DB10276041FB00E051A1 = {
 			isa = PBXGroup;
 			children = (
 				EFC2DB1B276041FB00E051A1 /* SwiftConnect */,
+				22D04F592C0DBAAE0052A6A4 /* SwiftConnectTunnel */,
+				22D04F562C0DBAAE0052A6A4 /* Frameworks */,
 				EFC2DB1A276041FB00E051A1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				EFC2DB19276041FB00E051A1 /* SwiftConnect.app */,
+				22D04F552C0DBAAE0052A6A4 /* SwiftConnectTunnel.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +142,9 @@
 				EFC2DB25276041FC00E051A1 /* SwiftConnect.entitlements */,
 				EFC2DB332760936600E051A1 /* SwiftConnectDebug.entitlements */,
 				EFC2DB22276041FC00E051A1 /* Preview Content */,
+				22D04F4E2C0DB08C0052A6A4 /* VPNConnector.m */,
+				22D04F4D2C0DB08C0052A6A4 /* SwiftConnect-Bridging-Header.h */,
+				22D04F502C0DB1820052A6A4 /* VPNConnector.h */,
 			);
 			path = SwiftConnect;
 			sourceTree = "<group>";
@@ -82,6 +160,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		22D04F542C0DBAAE0052A6A4 /* SwiftConnectTunnel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22D04F622C0DBAAE0052A6A4 /* Build configuration list for PBXNativeTarget "SwiftConnectTunnel" */;
+			buildPhases = (
+				22D04F512C0DBAAE0052A6A4 /* Sources */,
+				22D04F522C0DBAAE0052A6A4 /* Frameworks */,
+				22D04F532C0DBAAE0052A6A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftConnectTunnel;
+			productName = SwiftConnectTunnel;
+			productReference = 22D04F552C0DBAAE0052A6A4 /* SwiftConnectTunnel.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		EFC2DB18276041FB00E051A1 /* SwiftConnect */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EFC2DB28276041FC00E051A1 /* Build configuration list for PBXNativeTarget "SwiftConnect" */;
@@ -89,14 +184,15 @@
 				EFC2DB15276041FB00E051A1 /* Sources */,
 				EFC2DB16276041FB00E051A1 /* Frameworks */,
 				EFC2DB17276041FB00E051A1 /* Resources */,
+				22D04F652C0DBAAE0052A6A4 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				22D04F602C0DBAAE0052A6A4 /* PBXTargetDependency */,
 			);
 			name = SwiftConnect;
 			packageProductDependencies = (
-				EFC2DB302760563400E051A1 /* SwiftShell */,
 			);
 			productName = SwiftConnect;
 			productReference = EFC2DB19276041FB00E051A1 /* SwiftConnect.app */;
@@ -112,8 +208,12 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1400;
 				TargetAttributes = {
+					22D04F542C0DBAAE0052A6A4 = {
+						CreatedOnToolsVersion = 15.2;
+					};
 					EFC2DB18276041FB00E051A1 = {
 						CreatedOnToolsVersion = 13.1;
+						LastSwiftMigration = 1520;
 					};
 				};
 			};
@@ -127,18 +227,25 @@
 			);
 			mainGroup = EFC2DB10276041FB00E051A1;
 			packageReferences = (
-				EFC2DB2F2760563400E051A1 /* XCRemoteSwiftPackageReference "SwiftShell" */,
 			);
 			productRefGroup = EFC2DB1A276041FB00E051A1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				EFC2DB18276041FB00E051A1 /* SwiftConnect */,
+				22D04F542C0DBAAE0052A6A4 /* SwiftConnectTunnel */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		22D04F532C0DBAAE0052A6A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFC2DB17276041FB00E051A1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -151,11 +258,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		22D04F512C0DBAAE0052A6A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22D04F682C0DBC350052A6A4 /* GCDAsyncSocket.m in Sources */,
+				22D04F6B2C0DBC6E0052A6A4 /* NSMutableData+Inspector.m in Sources */,
+				22D04F5C2C0DBAAE0052A6A4 /* PacketTunnelProvider.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFC2DB15276041FB00E051A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				EFC2DB352760939300E051A1 /* AppDelegate.swift in Sources */,
+				22D04F4F2C0DB08C0052A6A4 /* VPNConnector.m in Sources */,
 				EFC2DB1F276041FB00E051A1 /* ContentView.swift in Sources */,
 				EFC2DB1D276041FB00E051A1 /* SwiftConnectApp.swift in Sources */,
 				EFC2DB2C2760527800E051A1 /* VPNUtils.swift in Sources */,
@@ -164,7 +282,79 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		22D04F602C0DBAAE0052A6A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22D04F542C0DBAAE0052A6A4 /* SwiftConnectTunnel */;
+			targetProxy = 22D04F5F2C0DBAAE0052A6A4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		22D04F632C0DBAAE0052A6A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = SwiftConnectTunnel/SwiftConnectTunnel.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5SJLXVCAHF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftConnectTunnel/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SwiftConnectTunnel;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.zhkl0228.SwiftConnect.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		22D04F642C0DBAAE0052A6A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = SwiftConnectTunnel/SwiftConnectTunnel.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5SJLXVCAHF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftConnectTunnel/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SwiftConnectTunnel;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.zhkl0228.SwiftConnect.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
 		EFC2DB26276041FC00E051A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -287,6 +477,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SwiftConnect/SwiftConnectDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -294,7 +485,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftConnect/Preview Content\"";
-				DEVELOPMENT_TEAM = WQC8YD9NM9;
+				DEVELOPMENT_TEAM = 5SJLXVCAHF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -305,9 +496,11 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = me.wenyu.SwiftConnect;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.zhkl0228.SwiftConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftConnect/SwiftConnect-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -317,6 +510,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SwiftConnect/SwiftConnect.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -324,7 +518,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftConnect/Preview Content\"";
-				DEVELOPMENT_TEAM = WQC8YD9NM9;
+				DEVELOPMENT_TEAM = 5SJLXVCAHF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -335,9 +529,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = me.wenyu.SwiftConnect;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.zhkl0228.SwiftConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftConnect/SwiftConnect-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -345,6 +540,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		22D04F622C0DBAAE0052A6A4 /* Build configuration list for PBXNativeTarget "SwiftConnectTunnel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22D04F632C0DBAAE0052A6A4 /* Debug */,
+				22D04F642C0DBAAE0052A6A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EFC2DB14276041FB00E051A1 /* Build configuration list for PBXProject "SwiftConnect" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -364,25 +568,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		EFC2DB2F2760563400E051A1 /* XCRemoteSwiftPackageReference "SwiftShell" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kareman/SwiftShell";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		EFC2DB302760563400E051A1 /* SwiftShell */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EFC2DB2F2760563400E051A1 /* XCRemoteSwiftPackageReference "SwiftShell" */;
-			productName = SwiftShell;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EFC2DB11276041FB00E051A1 /* Project object */;
 }

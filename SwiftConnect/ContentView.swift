@@ -38,7 +38,7 @@ struct VPNLaunchedScreen: View {
                 }.keyboardShortcut(.defaultAction)
         }
         Button(action: { vpn.openLogFile() }) {
-            Text("logs").underline()
+            Text("").underline()
                 .foregroundColor(Color.gray)
                 .fixedSize(horizontal: false, vertical: true)
         }.buttonStyle(PlainButtonStyle())
@@ -50,26 +50,14 @@ struct VPNLaunchedScreen: View {
 struct VPNLoginScreen: View {
     @EnvironmentObject var vpn: VPNController
     @EnvironmentObject var credentials: Credentials
-    @State private var saveToKeychain = true
     
     var body: some View {
         VStack {
-            Picker(selection: $vpn.proto, label: EmptyView()) {
-                ForEach(VPNProtocol.allCases, id: \.self) {
-                    Text($0.name)
-                }
-            }
-            TextField("Portal", text: $credentials.portal)
-            TextField("Username", text: $credentials.username)
-            SecureField("Password", text: $credentials.password).onSubmit {
-                vpn.start(credentials: credentials, save: saveToKeychain)
-            }
-            Toggle(isOn: $saveToKeychain) {
-                Text("Save to Keychain")
-            }.toggleStyle(CheckboxToggleStyle())
+            TextField("Host", text: $credentials.portal)
+            TextField("Port", text: $credentials.port)
             Spacer().frame(height: 25)
             Button(action: {
-                vpn.start(credentials: credentials, save: saveToKeychain)
+                vpn.start(credentials: credentials, save: true)
             }) {
                 Text("Connect")
             }.keyboardShortcut(.defaultAction)

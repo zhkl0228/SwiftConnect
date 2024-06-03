@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftShell
 import SwiftUI
 import Security
 
@@ -24,33 +23,37 @@ enum VPNState {
     }
 }
 
-enum VPNProtocol: String, Equatable, CaseIterable {
-    case globalProtect = "gp"
-    
-    var id: String {
-        return self.rawValue
-    }
-    
-    var name: String {
-        switch self {
-        case .globalProtect: return "GlobalProtect"
-        }
-    }
-}
-
 class VPNController: ObservableObject {
     @Published public var state: VPNState = .stopped
-    @Published public var proto: VPNProtocol = .globalProtect
     
     private var currentLogURL: URL?;
+    private var vpnConnector: VPNConnector?;
+    
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.vpnStatusDidChanged(notification:)), name: NSNotification.Name.NEVPNStatusDidChange, object: nil)
+    }
+    
+    @objc func vpnStatusDidChanged(notification: Notification) {
+        let session : NETunnelProviderSession = notification.object as! NETunnelProviderSession
+        let connected : Bool = session.status == NEVPNStatus.connected
+        AppDelegate.shared.vpnConnectionDidChange(connected: connected)
+        AppDelegate.shared.pinPopover = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            AppDelegate.shared.closePopover()
+        }
+        if(connected) {
+            state = .launched
+        } else {
+            state = .stopped
+        }
+    }
     
     func start(credentials: Credentials, save: Bool) {
         if save {
             credentials.save()
         }
         AppDelegate.shared.pinPopover = true
-        Self.killOpenConnect();
-        start(portal: credentials.portal, username: credentials.username, password: credentials.password) { succ in
+        start(portal: credentials.portal, port: credentials.port, password: credentials.port) { succ in
             AppDelegate.shared.pinPopover = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 AppDelegate.shared.closePopover()
@@ -58,90 +61,18 @@ class VPNController: ObservableObject {
         }
     }
     
-    private func start(portal: String, username: String, password: String, _ onLaunch: @escaping (_ succ: Bool) -> Void) {
+    private func start(portal: String, port: String, password: String, _ onLaunch: @escaping (_ succ: Bool) -> Void) {
         state = .processing
         AppDelegate.shared.vpnConnectionDidChange(connected: false)
-        // Prepare commands
-        print("[openconnect] start")
-        // stdin to input password
-        let stdinPath = URL(fileURLWithPath: "\(NSTemporaryDirectory())/\(NSUUID().uuidString)");
-        try! password.write(to: stdinPath, atomically: true, encoding: .utf8)
-        let stdin = try! FileHandle(forReadingFrom: stdinPath)
-        // stdout for logging
-        let stdoutPath = URL(fileURLWithPath: "\(NSTemporaryDirectory())/\(NSUUID().uuidString)");
-        try! "".write(to: stdoutPath, atomically: true, encoding: .utf8)
-        let stdout = try! FileHandle(forReadingFrom: stdoutPath)
-        currentLogURL = stdoutPath
-        print("[openconnect] log: \(stdoutPath.path)")
-        // Run
-        var context = CustomContext(main)
-        context.stdin = FileHandleStream(stdin, encoding: .utf8)
-        let shellCommand = "/usr/local/bin/openconnect --protocol=\(proto.id) \(portal) -u \(username) --passwd-on-stdin"
-        let command = context.runAsync(bash: "\(shellCommand) &> \(stdoutPath.path)")
-        print("[openconnect] cmd: \(shellCommand)")
-        // Launch callback
-        var launched = false;
-        watchLaunch(file: stdout) {
-            print("[openconnect] launched")
-            launched = true;
-            onLaunch(true)
-        }
-        // Completion callback
-        command.onCompletion { _ in
-            if self.state != .stopped {
-                DispatchQueue.main.async {
-                    if self.state != .stopped {
-                        self.state = .stopped
-                        AppDelegate.shared.vpnConnectionDidChange(connected: false)
-                    }
-                }
-            }
-            if !launched {
-                onLaunch(false)
-            }
-            try? stdin.close()
-            try? stdout.close()
-            print("[openconnect] completed")
-        }
-    }
-    
-    func watchLaunch(file: FileHandle, callback: @escaping () -> Void) {
-        let source = DispatchSource.makeFileSystemObjectSource(
-            fileDescriptor: file.fileDescriptor,
-            eventMask: .extend,
-            queue: DispatchQueue.main
-        )
-        source.setEventHandler {
-            guard source.data.contains(.extend) else { return }
-            if self.state == .processing {
-                self.state = .launched
-                AppDelegate.shared.vpnConnectionDidChange(connected: true)
-                callback()
-            }
-        }
-        source.setCancelHandler {
-            try? file.close()
-        }
-        file.seekToEndOfFile()
-        source.resume()
+        AppDelegate.vpnConnector.connectHost(portal, port: port)
     }
     
     func kill() {
-        state = .processing
-        Self.killOpenConnect();
+        AppDelegate.vpnConnector.stopVPNTunnel()
         state = .stopped
-        AppDelegate.shared.vpnConnectionDidChange(connected: false)
-    }
-    
-    static func killOpenConnect() {
-        print("[openconnect] kill")
-        run("pkill", "openconnect");
     }
     
     func openLogFile() {
-        if let url = currentLogURL {
-            NSWorkspace.shared.open(url)
-        }
     }
 }
 
@@ -149,30 +80,26 @@ class VPNController: ObservableObject {
 
 class Credentials: ObservableObject {
     @Published public var portal: String
-    @Published public var username: String
-    @Published public var password: String
+    @Published public var port: String
     
     init() {
         if let data = ContentView.inPreview ? nil : KeychainService.shared.load() {
-            username = data.username
-            password = data.password
+            port = data.port
             portal = data.portal
         } else {
-            portal = "student-access.anu.edu.au"
-            username = ""
-            password = ""
+            portal = ""
+            port = "20240"
         }
     }
     
     func save() {
-        let _ = KeychainService.shared.insertOrUpdate(credentials: CredentialsData(portal: portal, username: username, password: password))
+        let _ = KeychainService.shared.insertOrUpdate(credentials: CredentialsData(portal: portal, port: port))
     }
 }
 
 struct CredentialsData {
     let portal: String
-    let username: String
-    let password: String
+    let port: String
 }
 
 class KeychainService: NSObject {
@@ -181,8 +108,8 @@ class KeychainService: NSObject {
     private static let server = "swift-connect.wenyu.me"
     
     func insertOrUpdate(credentials: CredentialsData) -> Bool {
-        let username = credentials.username
-        let password = credentials.password.data(using: String.Encoding.utf8)!
+        let username = credentials.port
+        let password = "".data(using: String.Encoding.utf8)!
         let portal = credentials.portal
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
@@ -224,14 +151,12 @@ class KeychainService: NSObject {
         guard status == errSecSuccess else { return nil }
         
         guard let existingItem = item as? [String : Any],
-            let passwordData = existingItem[kSecValueData as String] as? Data,
-            let password = String(data: passwordData, encoding: String.Encoding.utf8),
             let username = existingItem[kSecAttrAccount as String] as? String,
             let portal = existingItem[kSecAttrDescription as String] as? String
         else {
             return nil
         }
         
-        return CredentialsData(portal: portal, username: username, password: password)
+        return CredentialsData(portal: portal, port: username)
     }
 }

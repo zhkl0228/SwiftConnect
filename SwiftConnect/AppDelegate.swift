@@ -7,12 +7,11 @@
 
 import Cocoa
 import SwiftUI
-import SwiftShell
-
 
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     static var shared: AppDelegate!;
+    static var vpnConnector: VPNConnector = VPNConnector()
     
     var pinPopover = false
     
@@ -47,7 +46,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         Self.shared = self;
-        // Hide app window
         NSApplication.shared.windows.first?.close()
     }
     
@@ -61,16 +59,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         if let window = NSApplication.shared.windows.first {
             window.close()
         }
-        if !testPrivilege() {
-            relaunch()
-        }
         // Initialize statusItem
         statusItem.button!.target = self
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
-        VPNController.killOpenConnect();
+        AppDelegate.vpnConnector.stopVPNTunnel()
     }
     
     func popoverWillShow(_ notification: Notification) {
@@ -99,19 +93,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     
     func closePopover() {
         popover.performClose(self)
-    }
-    
-    func testPrivilege() -> Bool {
-        return getuid() == 0;
-    }
-    
-    func relaunch() {
-        let bin = Bundle.main.executablePath!;
-        print("Relaunch: sudo \(bin)");
-        let _ = try! runAndPrint(bash: """
-            osascript -e "do shell script \\"sudo '\(bin)' > /dev/null 2>&1 &\\" with prompt \\"Start OpenConnect on privileged mode\\" with administrator privileges"
-        """);
-        NSApp.terminate(nil)
     }
 }
 
@@ -163,7 +144,7 @@ class ContextMenu: NSObject, NSMenuDelegate {
     }
     
     @objc func openProjectURL(_ menu: NSMenuItem) {
-        NSWorkspace.shared.open(URL(string: "https://github.com/wenyuzhao/SwiftConnect")!)
+        NSWorkspace.shared.open(URL(string: "https://github.com/zhkl0228/SwiftConnect")!)
     }
 }
 
