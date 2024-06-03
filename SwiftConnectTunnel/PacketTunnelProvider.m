@@ -12,13 +12,9 @@
 
 - (void)startTunnelWithOptions:(NSDictionary *)options completionHandler:(void (^)(NSError *))completionHandler {
     NETunnelProviderProtocol *protocol = (NETunnelProviderProtocol *) self.protocolConfiguration;
-    if (@available(iOS 14.0, *)) {
-        [protocol setIncludeAllNetworks: YES];
-    }
-    if (@available(iOS 16.4, *)) {
-        [protocol setExcludeAPNs: NO];
-        [protocol setExcludeCellularServices: NO];
-    }
+    [protocol setIncludeAllNetworks: YES];
+    [protocol setExcludeAPNs: NO];
+    [protocol setExcludeCellularServices: NO];
     NSDictionary *conf = [protocol providerConfiguration];
     NSString *host = [conf valueForKey: @"host"];
     NSString *port = [conf valueForKey: @"port"];
