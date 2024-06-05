@@ -11,7 +11,7 @@ import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     static var shared: AppDelegate!;
-    static var vpnConnector: VPNConnector = VPNConnector()
+    static var vpnConnector: VPNConnector!;
     
     var pinPopover = false
     
@@ -45,6 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     }
 
     func applicationWillFinishLaunching(_ notification: Notification) {
+        Self.vpnConnector = VPNConnector();
         Self.shared = self;
         NSApplication.shared.windows.first?.close()
     }

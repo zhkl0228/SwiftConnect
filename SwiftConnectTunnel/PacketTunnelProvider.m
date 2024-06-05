@@ -12,15 +12,18 @@
 
 - (void)startTunnelWithOptions:(NSDictionary *)options completionHandler:(void (^)(NSError *))completionHandler {
     NETunnelProviderProtocol *protocol = (NETunnelProviderProtocol *) self.protocolConfiguration;
+    [protocol setDisconnectOnSleep: YES];
     [protocol setIncludeAllNetworks: YES];
-    [protocol setExcludeAPNs: NO];
-    [protocol setExcludeCellularServices: NO];
+    [protocol setExcludeAPNs: YES];
+    [protocol setExcludeCellularServices: YES];
+    [protocol setExcludeLocalNetworks: YES];
     NSDictionary *conf = [protocol providerConfiguration];
     NSString *host = [conf valueForKey: @"host"];
     NSString *port = [conf valueForKey: @"port"];
     NSLog(@"startTunnelWithOptions=%@, handler=%@, host=%@, port=%@", options, completionHandler, host, port);
     
     NEPacketTunnelNetworkSettings *settings = [[NEPacketTunnelNetworkSettings alloc] initWithTunnelRemoteAddress: @"127.0.0.1"];
+    [settings setMTU: [NSNumber numberWithInt:1500]];
     
     NEIPv4Settings *ipv4Settings = [[NEIPv4Settings alloc] initWithAddresses:[NSArray arrayWithObject: @"10.1.10.1"] subnetMasks: [NSArray arrayWithObject: @"255.255.255.0"]];
     NEIPv4Route *defaultRoute = [NEIPv4Route defaultRoute];

@@ -7,7 +7,32 @@
 
 #import "VPNConnector.h"
 
+NSString *const VPN_NAME = @"SwiftVpn";
+
 @implementation VPNConnector
+
+-(id) init {
+    self = [super init];
+    [NETunnelProviderManager loadAllFromPreferencesWithCompletionHandler:^(NSArray<NETunnelProviderManager *> * _Nullable managers, NSError * _Nullable error) {
+        NSLog(@"init managers=%@, error=%@, manager=%@", managers, error, self->vpnManager);
+        if(error) {
+            return;
+        }
+        for(NETunnelProviderManager *manager in managers) {
+            if([VPN_NAME isEqualToString: [manager localizedDescription]]) {
+                self->vpnManager = manager;
+                NETunnelProviderProtocol *providerProtocol = (NETunnelProviderProtocol *) [self->vpnManager protocolConfiguration];
+                self->vpnConfiguration = [providerProtocol providerConfiguration];
+                break;
+            }
+        }
+    }];
+    return self;
+}
+
+-(NSDictionary *) vpnConfiguration {
+    return self->vpnConfiguration;
+}
 
 -(void) stopVPNTunnel {
     NSLog(@"stopVPNTunnel");
@@ -27,7 +52,7 @@
     [tunnelProtocol setProviderConfiguration: conf];
     
     [self->vpnManager setProtocolConfiguration: tunnelProtocol];
-    [self->vpnManager setLocalizedDescription: @"SwiftVpn"];
+    [self->vpnManager setLocalizedDescription: VPN_NAME];
     [self->vpnManager setEnabled: YES];
     
     [self->vpnManager saveToPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
@@ -53,7 +78,7 @@
             return;
         }
         for(NETunnelProviderManager *manager in managers) {
-            if([@"SwiftVpn" isEqualToString: [manager localizedDescription]]) {
+            if([VPN_NAME isEqualToString: [manager localizedDescription]]) {
                 self->vpnManager = manager;
                 break;
             }

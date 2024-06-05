@@ -13,7 +13,10 @@
 
 @interface VPNConnector : NSObject {
     NETunnelProviderManager *vpnManager;
+    NSDictionary *vpnConfiguration;
 }
+
+-(NSDictionary *) vpnConfiguration;
 
 -(void) stopVPNTunnel;
 

@@ -49,15 +49,15 @@ struct VPNLaunchedScreen: View {
 
 struct VPNLoginScreen: View {
     @EnvironmentObject var vpn: VPNController
-    @EnvironmentObject var credentials: Credentials
+    @EnvironmentObject var hostAndPort: HostAndPort
     
     var body: some View {
         VStack {
-            TextField("Host", text: $credentials.portal)
-            TextField("Port", text: $credentials.port)
+            TextField("Host", text: $hostAndPort.host)
+            TextField("Port", text: $hostAndPort.port)
             Spacer().frame(height: 25)
             Button(action: {
-                vpn.start(credentials: credentials, save: true)
+                vpn.start(hostAndPort: hostAndPort)
             }) {
                 Text("Connect")
             }.keyboardShortcut(.defaultAction)
@@ -68,12 +68,12 @@ struct VPNLoginScreen: View {
 
 struct ContentView: View {
     @StateObject var vpn = VPNController()
-    @StateObject var credentials: Credentials
+    @StateObject var hostAndPort: HostAndPort
     let forceState: VPNState?;
     
     init(forceState: VPNState? = nil) {
         self.forceState = forceState;
-        _credentials = StateObject(wrappedValue: Credentials())
+        _hostAndPort = StateObject(wrappedValue: HostAndPort())
     }
     
     var body: some View {
@@ -85,7 +85,7 @@ struct ContentView: View {
             }
         }
         .padding(windowInsets)
-        .frame(width: windowSize.width, height: windowSize.height).background(VisualEffect()).environmentObject(vpn).environmentObject(credentials)
+        .frame(width: windowSize.width, height: windowSize.height).background(VisualEffect()).environmentObject(vpn).environmentObject(hostAndPort)
     }
     
     static let inPreview: Bool = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1";

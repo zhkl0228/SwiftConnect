@@ -48,12 +48,9 @@ class VPNController: ObservableObject {
         }
     }
     
-    func start(credentials: Credentials, save: Bool) {
-        if save {
-            credentials.save()
-        }
+    func start(hostAndPort: HostAndPort) {
         AppDelegate.shared.pinPopover = true
-        start(portal: credentials.portal, port: credentials.port, password: credentials.port) { succ in
+        start(host: hostAndPort.host, port: hostAndPort.port) { succ in
             AppDelegate.shared.pinPopover = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 AppDelegate.shared.closePopover()
@@ -61,10 +58,10 @@ class VPNController: ObservableObject {
         }
     }
     
-    private func start(portal: String, port: String, password: String, _ onLaunch: @escaping (_ succ: Bool) -> Void) {
+    private func start(host: String, port: String, _ onLaunch: @escaping (_ succ: Bool) -> Void) {
         state = .processing
         AppDelegate.shared.vpnConnectionDidChange(connected: false)
-        AppDelegate.vpnConnector.connectHost(portal, port: port)
+        AppDelegate.vpnConnector.connectHost(host, port: port)
     }
     
     func kill() {
@@ -78,85 +75,19 @@ class VPNController: ObservableObject {
 
 
 
-class Credentials: ObservableObject {
-    @Published public var portal: String
+class HostAndPort: ObservableObject {
+    @Published public var host: String
     @Published public var port: String
     
     init() {
-        if let data = ContentView.inPreview ? nil : KeychainService.shared.load() {
-            port = data.port
-            portal = data.portal
-        } else {
-            portal = ""
+        let conf = AppDelegate.vpnConnector.vpnConfiguration()
+        if conf == nil {
+            host = ""
             port = "20240"
-        }
-    }
-    
-    func save() {
-        let _ = KeychainService.shared.insertOrUpdate(credentials: CredentialsData(portal: portal, port: port))
-    }
-}
-
-struct CredentialsData {
-    let portal: String
-    let port: String
-}
-
-class KeychainService: NSObject {
-    public static let shared = KeychainService();
-    
-    private static let server = "swift-connect.wenyu.me"
-    
-    func insertOrUpdate(credentials: CredentialsData) -> Bool {
-        let username = credentials.port
-        let password = "".data(using: String.Encoding.utf8)!
-        let portal = credentials.portal
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassInternetPassword,
-            kSecAttrServer as String: Self.server,
-        ]
-        let attributes: [String: Any] = [
-            kSecAttrAccount as String: username,
-            kSecValueData as String: password,
-            kSecAttrDescription as String: portal,
-        ]
-        let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-        if status == errSecItemNotFound {
-            let query: [String: Any] = [
-                kSecClass as String: kSecClassInternetPassword,
-                kSecAttrAccount as String: username,
-                kSecAttrServer as String: Self.server,
-                kSecValueData as String: password,
-                kSecAttrDescription as String: portal,
-            ]
-            let status = SecItemAdd(query as CFDictionary, nil)
-            return status == errSecSuccess
         } else {
-            return status == errSecSuccess
+            host = conf?["host"] as! String;
+            port = conf?["port"] as! String;
         }
-    }
-    
-    func load() -> CredentialsData? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassInternetPassword,
-            kSecAttrServer as String: Self.server,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-            kSecReturnAttributes as String: true,
-            kSecReturnData as String: true,
-        ]
-        
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
-        guard status != errSecItemNotFound else { return nil }
-        guard status == errSecSuccess else { return nil }
-        
-        guard let existingItem = item as? [String : Any],
-            let username = existingItem[kSecAttrAccount as String] as? String,
-            let portal = existingItem[kSecAttrDescription as String] as? String
-        else {
-            return nil
-        }
-        
-        return CredentialsData(portal: portal, port: username)
     }
 }
+
