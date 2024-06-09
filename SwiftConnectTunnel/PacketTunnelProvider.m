@@ -79,7 +79,7 @@
         self->completionHandler = nil;
     }
     NSLog(@"didConnectToHost=%@, port=%d", host, port);
-    uint8_t osType = 0x1;
+    uint8_t osType = 0x2;
     NSData *data = [NSData dataWithBytes: &osType length:1];
     [sock writeData: data withTimeout:-1 tag:TAG_WRITE_PACKET];
     self->canStop = NO;
