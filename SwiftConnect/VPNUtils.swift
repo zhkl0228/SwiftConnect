@@ -37,9 +37,11 @@ class VPNController: ObservableObject {
         let session : NETunnelProviderSession = notification.object as! NETunnelProviderSession
         let connected : Bool = session.status == NEVPNStatus.connected
         AppDelegate.shared.vpnConnectionDidChange(connected: connected)
-        AppDelegate.shared.pinPopover = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            AppDelegate.shared.closePopover()
+        if connected {
+            AppDelegate.shared.pinPopover = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                AppDelegate.shared.closePopover()
+            }
         }
         if(connected) {
             state = .launched
@@ -52,7 +54,7 @@ class VPNController: ObservableObject {
         AppDelegate.shared.pinPopover = true
         start(host: hostAndPort.host, port: hostAndPort.port) { succ in
             AppDelegate.shared.pinPopover = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 AppDelegate.shared.closePopover()
             }
         }
