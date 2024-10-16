@@ -4,5 +4,5 @@
 
 An VPN GUI client for macOS.
 
-![Screenshot](screenshots/login.png) ![Screenshot](screenshots/connected.png)
+![Screenshot](screenshots/login.jpg) ![Screenshot](screenshots/connected.jpg)
 
