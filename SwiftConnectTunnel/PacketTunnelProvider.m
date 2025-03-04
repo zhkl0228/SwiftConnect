@@ -5,10 +5,26 @@
 //  Created by Banny on 2024/6/3.
 //
 
+#import <netdb.h>
+#import <sys/socket.h>
+#import <arpa/inet.h>
 #import "PacketTunnelProvider.h"
 #import "NSMutableData+Inspector.h"
 
 @implementation PacketTunnelProvider
+
++(NSString *) getIPWithHostName:(const NSString *)hostName {
+    @try {
+        struct hostent *phot = gethostbyname([hostName UTF8String]);
+        struct in_addr ip_addr;
+        memcpy(&ip_addr, phot->h_addr_list[0], 4);
+        char ip[20] = {0};
+        inet_ntop(AF_INET, &ip_addr, ip, sizeof(ip));
+        return [NSString stringWithUTF8String:ip];
+    } @catch (NSException *exception) {
+        return nil;
+    }
+}
 
 - (void)startTunnelWithOptions:(NSDictionary *)options completionHandler:(void (^)(NSError *))completionHandler {
     NETunnelProviderProtocol *protocol = (NETunnelProviderProtocol *) self.protocolConfiguration;
@@ -20,7 +36,8 @@
     NSDictionary *conf = [protocol providerConfiguration];
     NSString *host = [conf valueForKey: @"host"];
     NSString *port = [conf valueForKey: @"port"];
-    NSLog(@"startTunnelWithOptions=%@, handler=%@, host=%@, port=%@", options, completionHandler, host, port);
+    NSString *ip = [PacketTunnelProvider getIPWithHostName:host];
+    NSLog(@"startTunnelWithOptions=%@, handler=%@, host=%@, port=%@, ip=%@", options, completionHandler, host, port, ip);
     
     NEPacketTunnelNetworkSettings *settings = [[NEPacketTunnelNetworkSettings alloc] initWithTunnelRemoteAddress: @"127.0.0.1"];
     [settings setMTU: [NSNumber numberWithInt:1500]];
@@ -28,10 +45,13 @@
     NEIPv4Settings *ipv4Settings = [[NEIPv4Settings alloc] initWithAddresses:[NSArray arrayWithObject: @"10.1.10.1"] subnetMasks: [NSArray arrayWithObject: @"255.255.255.0"]];
     NEIPv4Route *defaultRoute = [NEIPv4Route defaultRoute];
     [ipv4Settings setIncludedRoutes: [NSArray arrayWithObject: defaultRoute]];
-    [ipv4Settings setExcludedRoutes: [NSArray arrayWithObjects:
-                                      [[NEIPv4Route alloc] initWithDestinationAddress:@"10.0.0.0" subnetMask:@"255.0.0.0"],
-                                      [[NEIPv4Route alloc] initWithDestinationAddress:@"192.168.0.0" subnetMask:@"255.255.0.0"],
-                                      nil]];
+    NSMutableArray *excludedRoutes = [NSMutableArray array];
+    [excludedRoutes addObject:[[NEIPv4Route alloc] initWithDestinationAddress:@"10.0.0.0" subnetMask:@"255.0.0.0"]];
+    [excludedRoutes addObject:[[NEIPv4Route alloc] initWithDestinationAddress:@"192.168.0.0" subnetMask:@"255.255.0.0"]];
+    if(ip) {
+        [excludedRoutes addObject:[[NEIPv4Route alloc] initWithDestinationAddress:ip subnetMask:@"255.255.255.255"]];
+    }
+    [ipv4Settings setExcludedRoutes: excludedRoutes];
     [settings setIPv4Settings: ipv4Settings];
     
     NEDNSSettings *dnsSettings = [[NEDNSSettings alloc] initWithServers: [NSArray arrayWithObjects: @"8.8.8.8", @"8.8.4.4", nil]];
@@ -79,22 +99,23 @@
         self->completionHandler = nil;
     }
     NSLog(@"didConnectToHost=%@, port=%d", host, port);
-    uint8_t osType = 0x82;
+    NSArray * paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSLocalDomainMask, YES);
+    NSString * basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    NSString *config = [basePath stringByAppendingPathComponent:@"inspector_vpn_config.txt"];
+    NSLog(@"config path: %@", config); // /Library/inspector_vpn_config.txt
+    NSData *configData = [NSData dataWithContentsOfFile:config];
+    uint8_t osType = 0x2;
+    if(configData) {
+        osType |= 0x80;
+    }
     NSData *data = [NSData dataWithBytes: &osType length:1];
     [sock writeData: data withTimeout:-1 tag:TAG_WRITE_PACKET];
-    {
+    if(configData) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         NSLocale *locale = [NSLocale currentLocale];
         [dict setValue: [locale localeIdentifier] forKey: @"locale"];
         [dict setValue: [locale objectForKey:NSLocaleLanguageCode] forKey: @"language"];
-        {
-            NSArray * paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSLocalDomainMask, YES);
-            NSString * basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-            NSString *config = [basePath stringByAppendingPathComponent:@"inspector_vpn_config.txt"];
-            NSLog(@"config path: %@", config); // /Library/inspector_vpn_config.txt
-            NSData *configData = [NSData dataWithContentsOfFile:config];
-            [dict setValue: [configData base64EncodedStringWithOptions:0] forKey: @"config"];
-        }
+        [dict setValue: [configData base64EncodedStringWithOptions:0] forKey: @"config"];
         NSData *json = [NSJSONSerialization dataWithJSONObject:dict options: 0 error:nil];
         NSMutableData *extraData = [NSMutableData data];
         [extraData writeShort: (int) [json length]];
