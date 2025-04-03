@@ -17,7 +17,7 @@
                BlueprintIdentifier = "EFC2DB18276041FB00E051A1"
                BuildableName = "SwiftConnect.app"
                BlueprintName = "SwiftConnect"
-               ReferencedContainer = "container:SwiftConnect.xcodeproj">
+               ReferencedContainer = "container:SwiftConnectVpn.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,7 +47,7 @@
             BlueprintIdentifier = "EFC2DB18276041FB00E051A1"
             BuildableName = "SwiftConnect.app"
             BlueprintName = "SwiftConnect"
-            ReferencedContainer = "container:SwiftConnect.xcodeproj">
+            ReferencedContainer = "container:SwiftConnectVpn.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -64,7 +64,7 @@
             BlueprintIdentifier = "EFC2DB18276041FB00E051A1"
             BuildableName = "SwiftConnect.app"
             BlueprintName = "SwiftConnect"
-            ReferencedContainer = "container:SwiftConnect.xcodeproj">
+            ReferencedContainer = "container:SwiftConnectVpn.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

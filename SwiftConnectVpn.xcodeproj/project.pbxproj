@@ -217,7 +217,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EFC2DB14276041FB00E051A1 /* Build configuration list for PBXProject "SwiftConnect" */;
+			buildConfigurationList = EFC2DB14276041FB00E051A1 /* Build configuration list for PBXProject "SwiftConnectVpn" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -553,7 +553,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EFC2DB14276041FB00E051A1 /* Build configuration list for PBXProject "SwiftConnect" */ = {
+		EFC2DB14276041FB00E051A1 /* Build configuration list for PBXProject "SwiftConnectVpn" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EFC2DB26276041FC00E051A1 /* Debug */,
